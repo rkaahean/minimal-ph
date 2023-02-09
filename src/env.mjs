@@ -7,6 +7,7 @@ import { z } from "zod";
  */
 const server = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]),
+  NEXT_PUBLIC_PH_API_TOKEN: z.string()
 });
 
 /**
@@ -16,6 +17,7 @@ const server = z.object({
  */
 const client = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+  NEXT_PUBLIC_PH_API_TOKEN: z.string()
 });
 
 /**
@@ -26,6 +28,7 @@ const client = z.object({
 const processEnv = {
   NODE_ENV: process.env.NODE_ENV,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
+  NEXT_PUBLIC_PH_API_TOKEN: process.env.NEXT_PUBLIC_PH_API_TOKEN
 };
 
 // Don't touch the part below
@@ -44,6 +47,7 @@ if (!!process.env.SKIP_ENV_VALIDATION == false) {
     : client.safeParse(processEnv); // on client we can only validate the ones that are exposed
 
   if (parsed.success === false) {
+    console.log(parsed)
     console.error(
       "❌ Invalid environment variables:",
       parsed.error.flatten().fieldErrors,
